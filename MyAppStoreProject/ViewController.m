@@ -9,7 +9,7 @@
 #import "ViewController.h"
 @import iAd;
 
-@interface ViewController ()
+@interface ViewController ()<ADBannerViewDelegate>
 
 @property (strong, nonatomic)ADBannerView *adBannerView;
 
@@ -24,11 +24,28 @@
     
     
     self.adBannerView = [[ADBannerView alloc]initWithAdType:ADAdTypeBanner];
-    self.adBannerView.frame = CGRectMake(0, self.view.frame.size.height - 50, self.adBannerView.frame.size.width, self.adBannerView.frame.size.height);
+    self.adBannerView.frame = CGRectMake(0, 50, self.adBannerView.frame.size.width, self.adBannerView.frame.size.height);
+    self.adBannerView.delegate = self;
     [self.view addSubview:self.adBannerView];
     
     
     // Do any additional setup after loading the view, typically from a nib.
+}
+#pragma add bannerView delegate methods 
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    [UIView animateWithDuration:1.0 animations:^ {
+        banner.frame = CGRectMake(0, 50, self.adBannerView.frame.size.width, self.adBannerView.frame.size.height);
+         }];
+    
+}
+
+-(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    
+    [UIView animateWithDuration:1.0 animations:^ {
+        banner.frame = CGRectMake(0, -50, self.adBannerView.frame.size.width, self.adBannerView.frame.size.height);
+       
+         }];
 }
 
 - (void)didReceiveMemoryWarning {
